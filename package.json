@@ -1,0 +1,35 @@
+{
+  "name": "ac-learn-anything-api-nodejs",
+  "version": "1.0.0",
+  "description": "An AI-powered web application that generates personalized learning paths and summarizes complex content, built with Node.js and the OpenAI API.",
+  "keywords": [
+    "learning-path",
+    "openai-api",
+    "nodejs"
+  ],
+  "license": "ISC",
+  "author": "Adino Chang",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "dev": "tsc --noEmit & tsx --watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.0.1",
+    "drizzle-orm": "^0.44.2",
+    "express": "^5.1.0",
+    "openai": "^5.8.2"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.0.10",
+    "drizzle-kit": "^0.31.4",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
+  }
+}
