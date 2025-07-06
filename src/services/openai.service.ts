@@ -30,10 +30,12 @@ class OpenAIService {
 
       return response.output_text;
     } catch (error: unknown) {
-      // Log the original error for debugging
       console.error("Error calling OpenAI API:", error);
+
+      throw error;
     }
-    return "test";
+
+    return "";
   }
 }
 

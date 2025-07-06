@@ -14,6 +14,7 @@ app.use(cors());
 // routes
 app.use("/api", apiRoutes);
 
+// handler for undefined routes
 app.use((_req: Request, _res: Response, next: NextFunction) => {
   const error = new Error(`Not Found - ${_req.originalUrl}`);
 
@@ -21,6 +22,7 @@ app.use((_req: Request, _res: Response, next: NextFunction) => {
   next(error);
 });
 
+// handler for errors 
 app.use(
   (err: CustomError, _req: Request, res: Response, _next: NextFunction) => {
     console.error(err.stack);
