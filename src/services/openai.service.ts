@@ -3,49 +3,53 @@ import {
   OpenAIResponse,
   OpenAIResponseOutputItem,
   OpenAIResponseOutputText,
+  OpenAIResponseCreateParams,
 } from "../types/openai.js";
 import config from "@config/config.js";
 
-
 const openAI = new OpenAI({
-  apiKey: config.openAiKey
+  apiKey: config.openAiKey,
 });
 
 class OpenAIService {
+  defaultModel: string = "gpt-4";
+
   async getChatCompletion(
-    prompt: string,
-    model: string = "gpt-4"
+    createResponseParams: OpenAIResponseCreateParams
   ): Promise<string> {
     try {
-        const response: OpenAIResponse = await openAI.responses.create({
-        model: model,
-        input: prompt,
-        });
+      if (!createResponseParams.model) {
+        createResponseParams.model = config.openAiDefaultModel;
+      }
 
-        if (!response || !response.output) {
+      const response: OpenAIResponse = await openAI.responses.create(
+        createResponseParams
+      );
+
+      if (!response || !response.output) {
         throw new Error("OpenAI API returned no content.");
-        }
+      }
 
-        const responseOutputItem: OpenAIResponseOutputItem = response.output[0];        
+      const responseOutputItem: OpenAIResponseOutputItem = response.output[0];
 
-        if (!responseOutputItem || !responseOutputItem.content) {
+      if (!responseOutputItem || !responseOutputItem.content) {
         throw new Error("OpenAI API returned no content.");
-        }
+      }
 
-        const responseOutputText: OpenAIResponseOutputText =
+      const responseOutputText: OpenAIResponseOutputText =
         responseOutputItem.content[0];
 
-        if (!responseOutputText) {
-            throw new Error("OpenAI API returned no content.");
-        }
-            
-        const responseText = responseOutputText.text;
-
-        if (!responseText) {
+      if (!responseOutputText) {
         throw new Error("OpenAI API returned no content.");
-        }
+      }
 
-        return responseText;
+      const responseText = responseOutputText.text;
+
+      if (!responseText) {
+        throw new Error("OpenAI API returned no content.");
+      }
+
+      return responseText;
     } catch (error: unknown) {
       // Log the original error for debugging
       console.error("Error calling OpenAI API:", error);

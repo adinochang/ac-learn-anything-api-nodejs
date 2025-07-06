@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { TestApiRequestBody } from '../types/request.d.js'; 
+import { OpenAIResponseCreateParams } from "../types/openai.d.js";
 import openAIService from "@services/openai.service.js";
-
 
 export const testApi = async (
   req: Request<unknown, unknown, TestApiRequestBody>,
@@ -15,7 +15,11 @@ export const testApi = async (
       .json({ status: "error", message: "Question is required." });
   }
 
-  const response = await openAIService.getChatCompletion(question);
+  const params: OpenAIResponseCreateParams = {
+    input: question,
+  };
+
+  const response = await openAIService.getChatCompletion(params);
 
   res.status(200).json({
     status: "success",
