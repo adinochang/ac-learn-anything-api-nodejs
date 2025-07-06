@@ -5,4 +5,6 @@ const router = express.Router();
 
 router.post("/summary", topicController.summary);
 
+router.post("/learning-path", topicController.learningPath);
+
 export default router;
