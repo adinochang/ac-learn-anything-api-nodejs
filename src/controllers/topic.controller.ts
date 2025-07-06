@@ -27,7 +27,7 @@ export const summary = async (
 
   const params: OpenAIResponseCreateParams = {
     instructions: summaryInstructions,
-    input: topic,
+    input: `Give a short summary on the topic : ${topic}`,
   };
 
   const response = await openAIService.getChatCompletion(params);
