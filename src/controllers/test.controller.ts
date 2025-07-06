@@ -2,12 +2,15 @@ import { Request, Response } from 'express';
 import { TestApiRequestBody } from '../types/request.d.js'; 
 import { OpenAIResponseCreateParams } from "../types/openai.d.js";
 import openAIService from "@services/openai.service.js";
+import { PROMPT_IDENTITY_TEACHER as PROMPT_IDENTITY } from "@config/prompts/index.js";
 
 export const testApi = async (
   req: Request<unknown, unknown, TestApiRequestBody>,
   res: Response
 ) => {
   const { question } = req.body;
+
+  const testInstructions = `${PROMPT_IDENTITY}`;
 
   if (!question) {
     return res
@@ -16,6 +19,7 @@ export const testApi = async (
   }
 
   const params: OpenAIResponseCreateParams = {
+    instructions: testInstructions,
     input: question,
   };
 
