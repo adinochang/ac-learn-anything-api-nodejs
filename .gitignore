@@ -8,7 +8,6 @@ npm-debug.log
 ## Compiled JavaScript files
 *.js
 *.js.map
-*.d.ts
 
 ## TypeScript build output directories
 /dist/
