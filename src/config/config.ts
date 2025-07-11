@@ -3,15 +3,17 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 interface Config {
-  port: number;
+  databaseUrl: string;
   openAiKey: string;
   openAiDefaultModel: string;
+  port: number;
 }
 
 const config: Config = {
-  port: parseInt(process.env.PORT || "3000", 10),
+  databaseUrl: process.env.DATABASE_URL || "",
   openAiKey: process.env.OPEN_AI_API_KEY || "",
   openAiDefaultModel: "gpt-4",
+  port: parseInt(process.env.PORT || "3000", 10),
 };
 
 export default config;
