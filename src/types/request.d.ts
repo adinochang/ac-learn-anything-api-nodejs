@@ -1,3 +1,9 @@
+export interface CreateUserRequestBody {
+  email: string;
+  name: string;
+  password: string;
+}
+
 export interface TopicSummaryRequestBody {
   topic: string;
 }
