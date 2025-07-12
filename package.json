@@ -16,7 +16,9 @@
     "build": "tsc",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "drizzle-generate": "drizzle-kit generate",
+    "drizzle-migrate": "drizzle-kit migrate"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.1",
