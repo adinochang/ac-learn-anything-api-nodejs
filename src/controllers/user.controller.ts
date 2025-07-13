@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { CreateUserRequestBody, GetUserRequestParams } from "../types/request.d.js";
 import { userRepository } from "@repositories/user.repository.js";
-import { hashPassword } from "@utils/auth.utils.js";
+import { hashPassword, comparePassword } from "@utils/auth.utils.js";
 import { UserRecord } from "@models/user.js";
 
 export const create = async (
@@ -12,10 +12,14 @@ export const create = async (
 
   const userId = createUserIdFromEmail(email);
 
-  const existingUser = await userRepository.findById(userId);
+  const existingUser: UserRecord | undefined = await userRepository.findById(
+    userId
+  );
 
   if (existingUser) {
-    res.status(400).json({ status: "error", message: "User already exists." });
+    return res
+      .status(400)
+      .json({ status: "error", message: "User already exists." });
   }
 
   const hashedPassword = await hashPassword(password);
@@ -42,7 +46,9 @@ export const getUserById = async (
   );
 
   if (!existingUser) {
-    res.status(400).json({ status: "error", message: "User not found." });
+    return res
+      .status(400)
+      .json({ status: "error", message: "User not found." });
   } else {
     res.status(201).json({
       userId: userId,
@@ -50,7 +56,45 @@ export const getUserById = async (
       email: existingUser.email,
       createdAt: existingUser.createdAt,
     });
-  }  
+  }
+};
+
+export const login = async (
+  req: Request<unknown, CreateUserRequestBody>,
+  res: Response
+) => {
+  const { email, password } = req.body;
+
+  const userId = createUserIdFromEmail(email);
+
+  const existingUser: UserRecord | undefined = await userRepository.findById(
+    userId
+  );
+
+  if (!existingUser) {
+    return res
+      .status(400)
+      .json({ status: "error", message: "User not found." });
+  } else {
+    const isPasswordMatch = await comparePassword(
+      password,
+      existingUser.hashedPassword
+    );
+
+    if (!isPasswordMatch) {
+      return res.status(400).json({
+        status: "error",
+        message: "Incorrect password. Please try again.",
+      });
+    }
+
+    res.status(201).json({
+      userId: userId,
+      userName: existingUser.userName,
+      email: existingUser.email,
+      createdAt: existingUser.createdAt,
+    });
+  }
 };
 
 export const createUserIdFromEmail = (email: string): string => {
