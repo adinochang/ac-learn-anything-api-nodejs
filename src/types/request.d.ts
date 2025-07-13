@@ -4,6 +4,10 @@ export interface CreateUserRequestBody {
   password: string;
 }
 
+export interface GetUserRequestParams {
+  userId: string;
+}
+
 export interface TopicSummaryRequestBody {
   topic: string;
 }
