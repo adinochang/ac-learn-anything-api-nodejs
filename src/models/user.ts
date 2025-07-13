@@ -1,7 +1,7 @@
 export interface UserRecord {
-  userId: string,
-  userName: string,
-  email: string,
-  hashedPassword: string,
-  createdAt: Date
+  userId: number;
+  userName: string;
+  email: string;
+  hashedPassword: string;
+  createdAt: Date;
 }

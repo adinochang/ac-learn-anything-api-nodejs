@@ -10,10 +10,8 @@ export const create = async (
 ) => {
   const { email, name, password } = req.body;
 
-  const userId = createUserIdFromEmail(email);
-
-  const existingUser: UserRecord | undefined = await userRepository.findById(
-    userId
+  const existingUser: UserRecord | undefined = await userRepository.findByEmail(
+    email
   );
 
   if (existingUser) {
@@ -24,15 +22,20 @@ export const create = async (
 
   const hashedPassword = await hashPassword(password);
 
-  await userRepository.create({
-    userId: userId,
+  const newUser: UserRecord | undefined = await userRepository.create({
     userName: name,
     email: email,
     hashedPassword: hashedPassword,
     createdAt: new Date(),
   });
 
-  res.status(201).json({ userId, email, name });
+  if (!newUser) {
+    return res
+      .status(400)
+      .json({ status: "error", message: "User not created." });
+  } else {
+    res.status(201).json(newUser);
+  }
 };
 
 export const getUserById = async (
@@ -40,6 +43,13 @@ export const getUserById = async (
   res: Response
 ) => {
   const { userId } = req.params;
+  const userIdCheck = Number(userId);
+
+  if (Number.isNaN(userIdCheck) || !Number.isFinite(userIdCheck)) {
+    return res
+      .status(400)
+      .json({ status: "error", message: "Input is not a valid ID." });
+  }
 
   const existingUser: UserRecord | undefined = await userRepository.findById(
     userId
@@ -65,10 +75,8 @@ export const login = async (
 ) => {
   const { email, password } = req.body;
 
-  const userId = createUserIdFromEmail(email);
-
-  const existingUser: UserRecord | undefined = await userRepository.findById(
-    userId
+  const existingUser: UserRecord | undefined = await userRepository.findByEmail(
+    email
   );
 
   if (!existingUser) {
@@ -89,14 +97,10 @@ export const login = async (
     }
 
     res.status(201).json({
-      userId: userId,
+      userId: existingUser.userId,
       userName: existingUser.userName,
       email: existingUser.email,
       createdAt: existingUser.createdAt,
     });
   }
-};
-
-export const createUserIdFromEmail = (email: string): string => {
-  return email.replace(/[^a-zA-Z0-9_-]/g, "_");
 };

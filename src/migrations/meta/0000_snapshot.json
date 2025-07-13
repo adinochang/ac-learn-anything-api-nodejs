@@ -1,5 +1,5 @@
 {
-  "id": "01528c76-0239-47fe-bab7-9b5a884a6b75",
+  "id": "010a5486-189b-4555-abe2-338765108cb4",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -10,7 +10,7 @@
       "columns": {
         "user_id": {
           "name": "user_id",
-          "type": "text",
+          "type": "serial",
           "primaryKey": true,
           "notNull": true
         },
@@ -22,6 +22,12 @@
         },
         "email": {
           "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "hashed_password": {
+          "name": "hashed_password",
           "type": "text",
           "primaryKey": false,
           "notNull": true

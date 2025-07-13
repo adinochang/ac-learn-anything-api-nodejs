@@ -9,10 +9,6 @@ export const schema = {
   ...usersSchema,
 };
 
-// Type inference for Drizzle queries so we can use it outside this file without TS type errors
-export type UserInsert = typeof usersSchema.users.$inferInsert;
-export type UserSelect = typeof usersSchema.users.$inferSelect;
-
 /*
 In terminal, run :
 - npx drizzle-kit generate -> to create a migration sql file

@@ -5,7 +5,7 @@ export interface CreateUserRequestBody {
 }
 
 export interface GetUserRequestParams {
-  userId: string;
+  userId: number;
 }
 
 export interface TopicSummaryRequestBody {
