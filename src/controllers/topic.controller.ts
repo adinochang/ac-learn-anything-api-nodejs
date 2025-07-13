@@ -14,7 +14,7 @@ import {
 } from "@config/prompts/index.js";
 
 export const summary = async (
-  req: Request<unknown, unknown, TopicSummaryRequestBody>,
+  req: Request<unknown, TopicSummaryRequestBody>,
   res: Response
 ) => {
   const { topic } = req.body;
@@ -45,7 +45,7 @@ export const summary = async (
 };
 
 export const learningPath = async (
-  req: Request<unknown, unknown, TopicLearningPathRequestBody>,
+  req: Request<unknown, TopicLearningPathRequestBody>,
   res: Response
 ) => {
   const { topic, proficiency } = req.body;
@@ -84,7 +84,7 @@ export const learningPath = async (
 };
 
 export const keyWords = async (
-  req: Request<unknown, unknown, TopicLearningPathRequestBody>,
+  req: Request<unknown, TopicLearningPathRequestBody>,
   res: Response
 ) => {
   const { topic, proficiency } = req.body;
