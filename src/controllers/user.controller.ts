@@ -1,5 +1,8 @@
-import { Request, Response, NextFunction } from "express";
-import { CreateUserRequestBody, GetUserRequestParams } from "../types/request.d.js";
+import { Request, Response } from "express";
+import {
+  CreateUserRequestBody,
+  GetUserRequestParams,
+} from "../types/request.d.js";
 import { userRepository } from "@repositories/user.repository.js";
 import { hashPassword, comparePassword } from "@utils/auth.utils.js";
 import { UserRecord } from "@models/user.js";
