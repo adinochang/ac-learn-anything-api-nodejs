@@ -1,14 +1,7 @@
 import { db } from "@config/database.js";
 import { users } from "@schemas/users.schema.js";
+import { UserRecord } from "@models/user.js";
 import { eq } from "drizzle-orm";
-
-interface UserRecord {
-  userId: string,
-  userName: string,
-  email: string,
-  hashedPassword: string,
-  createdAt: Date
-}
 
 class UserRepository {
   async findById(userId: string): Promise<UserRecord | undefined> {
