@@ -1,7 +1,17 @@
 import express from "express";
 import * as topicController from "@controllers/topic.controller.js";
+import {
+  validateCreateTopic,
+  validateUpdateTopic,
+} from "@middlewares/topic.validation.js";
 
 const router = express.Router();
+
+router.post("/create", validateCreateTopic, topicController.create);
+
+router.get("/:topicId", topicController.getTopicById);
+
+router.put("/:topicId", validateUpdateTopic, topicController.update);
 
 router.post("/summary", topicController.summary);
 

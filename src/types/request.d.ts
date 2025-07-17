@@ -8,6 +8,15 @@ export interface GetUserRequestParams {
   userId: number;
 }
 
+export interface CreateTopicRequestBody {
+  topic: string;
+  description: string;
+}
+
+export interface GetTopicRequestParams {
+  topicId: number;
+}
+
 export interface TopicSummaryRequestBody {
   topic: string;
 }

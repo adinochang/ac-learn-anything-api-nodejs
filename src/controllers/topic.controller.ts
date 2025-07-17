@@ -1,9 +1,13 @@
 import { Request, Response } from 'express';
 import {
+  CreateTopicRequestBody,
+  GetTopicRequestParams,
   TopicSummaryRequestBody,
   TopicLearningPathRequestBody,
   TopicLearningPathProficiency,
 } from "../types/request.d.js";
+import { TopicRecord } from "@models/topic.js";
+import { topicRepository } from "@repositories/topic.repository.js";
 import { OpenAIResponseCreateParams } from "../types/openai.d.js";
 import openAIService from "@services/openai.service.js";
 import {
@@ -12,6 +16,97 @@ import {
   PROMPT_INSTRUCTION_TOPIC_LEARNING_PATH,
   PROMPT_INSTRUCTION_TOPIC_KEY_WORDS,
 } from "@config/prompts/index.js";
+
+export const create = async (
+  req: Request<unknown, CreateTopicRequestBody>,
+  res: Response
+) => {
+  const { topic, description } = req.body;
+
+  const newTopic: TopicRecord | undefined = await topicRepository.create({
+    topic: topic,
+    description: description,
+  });
+
+  if (!newTopic) {
+    return res
+      .status(400)
+      .json({ status: "error", message: "Topic not created." });
+  } else {
+    res.status(201).json(newTopic);
+  }
+};
+
+export const getTopicById = async (
+  req: Request<GetTopicRequestParams>,
+  res: Response
+) => {
+  const { topicId } = req.params;
+  const topicIdCheck = Number(topicId);
+
+  if (Number.isNaN(topicIdCheck) || !Number.isFinite(topicIdCheck)) {
+    return res
+      .status(400)
+      .json({ status: "error", message: "Input is not a valid ID." });
+  }
+
+  const existingTopic: TopicRecord | undefined = await topicRepository.findById(
+    topicId
+  );
+
+  if (!existingTopic) {
+    return res
+      .status(400)
+      .json({ status: "error", message: "Topic not found." });
+  } else {
+    res.status(201).json({
+      topicId: topicId,
+      topic: existingTopic.topic,
+      description: existingTopic.description,
+      status: existingTopic.status,
+    });
+  }
+};
+
+export const update = async (req: Request, res: Response) => {
+  const { topicId } = req.params;
+  const topicIdInt = Number(topicId);
+
+  console.log(req.params);
+
+  if (Number.isNaN(topicIdInt) || !Number.isFinite(topicIdInt)) {
+    return res.status(400).json({
+      status: "error",
+      message: `Input [${topicId}] is not a valid ID.`,
+    });
+  }
+
+  const existingTopic: TopicRecord | undefined = await topicRepository.findById(
+    topicIdInt
+  );
+
+  if (!existingTopic) {
+    return res
+      .status(400)
+      .json({ status: "error", message: "Topic not found." });
+  } else {
+    const { topic, description, status } = req.body;
+
+    const updatedTopic: TopicRecord | undefined = await topicRepository.update({
+      topicId: topicIdInt,
+      topic: topic,
+      description: description,
+      status: status,
+    });
+
+    res.status(201).json({
+      topicId: topicIdInt,
+      topic: existingTopic.topic,
+      description: existingTopic.description,
+      status: existingTopic.status,
+    });
+  }
+};
 
 export const summary = async (
   req: Request<unknown, TopicSummaryRequestBody>,
