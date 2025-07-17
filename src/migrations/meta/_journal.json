@@ -8,6 +8,13 @@
       "when": 1752374449688,
       "tag": "0000_powerful_emma_frost",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1752399157251,
+      "tag": "0001_pale_silhouette",
+      "breakpoints": true
     }
   ]
 }

@@ -24,7 +24,6 @@ export default [
     },
     rules: {
       semi: ["error", "always"],
-      "no-unused-vars": "off", // Turn off the base JS rule
       "@typescript-eslint/no-unused-vars": [
         "warn", // Or "error"
         {
