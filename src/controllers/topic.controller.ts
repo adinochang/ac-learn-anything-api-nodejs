@@ -101,9 +101,9 @@ export const update = async (req: Request, res: Response) => {
 
     res.status(201).json({
       topicId: topicIdInt,
-      topic: existingTopic.topic,
-      description: existingTopic.description,
-      status: existingTopic.status,
+      topic: updatedTopic.topic,
+      description: updatedTopic.description,
+      status: updatedTopic.status,
     });
   }
 };
