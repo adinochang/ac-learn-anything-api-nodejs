@@ -72,8 +72,6 @@ export const update = async (req: Request, res: Response) => {
   const { topicId } = req.params;
   const topicIdInt = Number(topicId);
 
-  console.log(req.params);
-
   if (Number.isNaN(topicIdInt) || !Number.isFinite(topicIdInt)) {
     return res.status(400).json({
       status: "error",
