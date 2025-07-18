@@ -1,0 +1,28 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: nodejs_learn_anything  
+    
+    ports:
+      - "${PORT}:${PORT}"
+    
+    # Mount your local source code into the container.
+    volumes:
+      - .:/app
+      # Create an anonymous volume for node_modules inside the container.
+      # This prevents your host's node_modules (which might be for a different OS/architecture)
+      # from overwriting the container's node_modules, ensuring consistency.
+      - /app/node_modules
+    
+    # Override the default command for development.
+    command: npm run dev
+    
+    # Define environment variables for API.
+    environment:
+      - NODE_ENV=development
+      - OPEN_AI_API_KEY=${OPEN_AI_API_KEY}
+      - DATABASE_URL=${DATABASE_URL}
+      
