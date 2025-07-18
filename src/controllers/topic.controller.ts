@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import {
+  AuthenticatedRequest,
   CreateTopicRequestBody,
   GetTopicRequestParams,
   TopicSummaryRequestBody,
@@ -43,11 +44,18 @@ export const getTopicById = async (
 ) => {
   const { topicId } = req.params;
   const topicIdCheck = Number(topicId);
-
+  const userId = (req as AuthenticatedRequest).authenticatedUser.id;
+  
   if (Number.isNaN(topicIdCheck) || !Number.isFinite(topicIdCheck)) {
     return res
       .status(400)
       .json({ status: "error", message: "Input is not a valid ID." });
+  }
+
+  if (Number.isNaN(userId) || !Number.isFinite(userId)) {
+    return res
+      .status(400)
+      .json({ status: "error", message: "Invalid User ID." });
   }
 
   const existingTopic: TopicRecord | undefined = await topicRepository.findById(

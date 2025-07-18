@@ -1,3 +1,7 @@
+import { Request } from "express";
+import { ParamsDictionary } from "express-serve-static-core"; 
+import { JwtPayload } from "jsonwebtoken";
+
 export interface CreateUserRequestBody {
   email: string;
   name: string;
@@ -13,7 +17,7 @@ export interface CreateTopicRequestBody {
   description: string;
 }
 
-export interface GetTopicRequestParams {
+export interface GetTopicRequestParams extends ParamsDictionary {
   topicId: number;
 }
 
@@ -38,4 +42,21 @@ export interface TestApiRequestBody {
 
 export interface TestApiRequestBodybb {
   question: string;
+}
+
+export interface AuthenticatedRequest<
+  P = ParamsDictionary | GetTopicRequestParams,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ResBody = any,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ReqBody = any,
+  ReqQuery = ParsedQs
+> extends Request<P, ResBody, ReqBody, ReqQuery> {
+  authenticatedUser: {
+    id: number;
+  };
+}
+
+export interface AuthenticatedJwtPayload extends JwtPayload {
+  userId?: number;
 }

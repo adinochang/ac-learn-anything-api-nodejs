@@ -4,12 +4,13 @@ import {
   validateCreateTopic,
   validateUpdateTopic,
 } from "@middlewares/topic.validation.js";
+import { authenticateJwtToken } from "@middlewares/token.validation.js";
 
 const router = express.Router();
 
 router.post("/create", validateCreateTopic, topicController.create);
 
-router.get("/:topicId", topicController.getTopicById);
+router.get("/:topicId", authenticateJwtToken, topicController.getTopicById);
 
 router.put("/:topicId", validateUpdateTopic, topicController.update);
 
