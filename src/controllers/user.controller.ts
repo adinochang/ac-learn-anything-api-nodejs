@@ -4,7 +4,7 @@ import {
   GetUserRequestParams,
 } from "../types/request.d.js";
 import { userRepository } from "@repositories/user.repository.js";
-import { hashPassword, comparePassword } from "@utils/auth.utils.js";
+import { hashPassword, comparePassword, generateJwtToken } from "@utils/auth.utils.js";
 import { UserRecord } from "@models/user.js";
 
 export const create = async (
@@ -99,11 +99,13 @@ export const login = async (
       });
     }
 
+    const token = generateJwtToken(existingUser);
+    
     res.status(201).json({
       userId: existingUser.userId,
       userName: existingUser.userName,
       email: existingUser.email,
-      createdAt: existingUser.createdAt,
+      token: token,
     });
   }
 };

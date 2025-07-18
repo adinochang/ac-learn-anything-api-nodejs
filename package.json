@@ -23,6 +23,7 @@
   "dependencies": {
     "@neondatabase/serverless": "^1.0.1",
     "bcryptjs": "^3.0.2",
+    "jsonwebtoken": "^9.0.2",
     "cors": "^2.8.5",
     "dotenv": "^17.0.1",
     "drizzle-orm": "^0.44.2",
@@ -40,6 +41,7 @@
     "@types/validator": "^13.15.2",
     "@typescript-eslint/eslint-plugin": "^8.35.1",
     "@typescript-eslint/parser": "^8.35.1",
+    "@types/jsonwebtoken": "^9.0.1",
     "drizzle-kit": "^0.31.4",
     "eslint": "^9.30.1",
     "tsx": "^4.20.3",

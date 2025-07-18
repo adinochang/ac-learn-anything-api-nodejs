@@ -1,4 +1,7 @@
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import config from "@config/config.js";
+import { UserRecord } from "@models/user.js";
 
 const SALT_ROUNDS = 10;
 
@@ -17,4 +20,10 @@ export const comparePassword = async (
   const isMatch = await bcrypt.compare(plainPassword, hashedPassword);
     
   return isMatch;
+};
+
+export const generateJwtToken = (user: UserRecord): string => {
+  return jwt.sign({ id: user.userId }, config.jwtSecret, {
+    expiresIn: "1h",
+  });
 };
