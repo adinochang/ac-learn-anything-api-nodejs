@@ -8,11 +8,21 @@ import { authenticateJwtToken } from "@middlewares/token.validation.js";
 
 const router = express.Router();
 
-router.post("/create", validateCreateTopic, topicController.create);
+router.post(
+  "/create",
+  authenticateJwtToken,
+  validateCreateTopic,
+  topicController.create
+);
 
 router.get("/:topicId", authenticateJwtToken, topicController.getTopicById);
 
-router.put("/:topicId", validateUpdateTopic, topicController.update);
+router.put(
+  "/:topicId",
+  authenticateJwtToken,
+  validateUpdateTopic,
+  topicController.update
+);
 
 router.post("/summary", topicController.summary);
 
