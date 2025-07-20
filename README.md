@@ -45,7 +45,6 @@ Additional pre-requisites without docker:
 1.  **Clone the repository:**
     ```bash
     git clone https://github.com/adinochang/ac-learn-anything-api-nodejs.git
-    cd ac-learn-anything-api-nodejs
     ```
 
 2.  **Set up Environment Variables:**
@@ -53,16 +52,17 @@ Additional pre-requisites without docker:
     Create a `.env` file in the root of your project. You may copy it from `sample.env`. This file will contain sensitive information and configuration.
     
 
-3. Installation and Running the Application **with Docker**
+3. Installing and Running the Application **with Docker**
 
     Start the docker container:
 
     ```docker compose up```
 
-4. Installation and Running the Application **without Docker**
+4. Installing and Running the Application **without Docker**
 
     **Install dependencies:**
     ```bash
+    cd ac-learn-anything-api-nodejs
     npm install
     # or
     yarn install
@@ -70,11 +70,30 @@ Additional pre-requisites without docker:
 
     **Start the development server:**
     ```bash
+    cd ac-learn-anything-api-nodejs
     npm run dev
     # or
     yarn dev
     ```
     The API should now be running, typically on `http://localhost:3000` (or the `PORT` specified in your `.env` file).
+
+5. Initialize the database **with Docker**
+
+    * Launch Docker Desktop and open the nodejs_learn_anything container
+    * Use the Exec tool
+    * Run the drizzle-kit commands:
+    ```bash
+    npx drizzle-kit generate
+    npx drizzle-kit migrate
+    ```
+    
+6. Initialize the database **without Docker**
+
+    ```
+    cd ac-learn-anything-api-nodejs
+    npm run drizzle-generate
+    npm run drizzle-migrate
+    ```    
 
 ## Project Structure
 
