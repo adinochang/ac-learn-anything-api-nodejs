@@ -18,15 +18,25 @@ import {
   PROMPT_INSTRUCTION_TOPIC_KEY_WORDS,
 } from "@config/prompts/index.js";
 
+
 export const create = async (
   req: Request<unknown, CreateTopicRequestBody>,
   res: Response
 ) => {
-  const { topic, description } = req.body;
+  const { topic, description, level } = req.body;
+  const userId = (req as AuthenticatedRequest).authenticatedUser.id;
+
+  if (Number.isNaN(userId) || !Number.isFinite(userId)) {
+    return res
+      .status(400)
+      .json({ status: "error", message: "Invalid User ID." });
+  }
 
   const newTopic: TopicRecord | undefined = await topicRepository.create({
+    userId: userId,
     topic: topic,
     description: description,
+    level: level,
   });
 
   if (!newTopic) {
@@ -45,7 +55,7 @@ export const getTopicById = async (
   const { topicId } = req.params;
   const topicIdCheck = Number(topicId);
   const userId = (req as AuthenticatedRequest).authenticatedUser.id;
-  
+
   if (Number.isNaN(topicIdCheck) || !Number.isFinite(topicIdCheck)) {
     return res
       .status(400)
@@ -58,9 +68,8 @@ export const getTopicById = async (
       .json({ status: "error", message: "Invalid User ID." });
   }
 
-  const existingTopic: TopicRecord | undefined = await topicRepository.findById(
-    topicId
-  );
+  const existingTopic: TopicRecord | undefined =
+    await topicRepository.findByIdAndUserId(topicId, userId);
 
   if (!existingTopic) {
     return res
@@ -72,6 +81,7 @@ export const getTopicById = async (
       topic: existingTopic.topic,
       description: existingTopic.description,
       status: existingTopic.status,
+      level: existingTopic.level,
     });
   }
 };
@@ -79,6 +89,7 @@ export const getTopicById = async (
 export const update = async (req: Request, res: Response) => {
   const { topicId } = req.params;
   const topicIdInt = Number(topicId);
+  const userId = (req as AuthenticatedRequest).authenticatedUser.id;
 
   if (Number.isNaN(topicIdInt) || !Number.isFinite(topicIdInt)) {
     return res.status(400).json({
@@ -87,22 +98,29 @@ export const update = async (req: Request, res: Response) => {
     });
   }
 
-  const existingTopic: TopicRecord | undefined = await topicRepository.findById(
-    topicIdInt
-  );
+  if (Number.isNaN(userId) || !Number.isFinite(userId)) {
+    return res
+      .status(400)
+      .json({ status: "error", message: "Invalid User ID." });
+  }
+
+  const existingTopic: TopicRecord | undefined =
+    await topicRepository.findByIdAndUserId(topicIdInt, userId);
 
   if (!existingTopic) {
     return res
       .status(400)
       .json({ status: "error", message: "Topic not found." });
   } else {
-    const { topic, description, status } = req.body;
+    const { topic, description, status, level } = req.body;
 
     const updatedTopic: TopicRecord | undefined = await topicRepository.update({
+      userId: userId,
       topicId: topicIdInt,
       topic: topic,
       description: description,
       status: status,
+      level: level,
     });
 
     res.status(201).json({
@@ -110,6 +128,7 @@ export const update = async (req: Request, res: Response) => {
       topic: updatedTopic.topic,
       description: updatedTopic.description,
       status: updatedTopic.status,
+      level: updatedTopic.level,
     });
   }
 };

@@ -24,6 +24,7 @@ Adino Chang - [GitHub Profile](https://github.com/adinochang) | [LinkedIn Profil
 * **OpenAI API**
 * **PostgreSQL**
 * **Drizzle-ORM**
+* **JWT**
 
 ## Getting Started
 

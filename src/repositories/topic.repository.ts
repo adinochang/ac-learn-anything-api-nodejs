@@ -1,7 +1,7 @@
 import { db } from "@config/database.js";
 import { topics, TopicSelect, TopicInsert } from "@schemas/topics.schema.js";
 import { TopicRecord } from "@models/topic.js";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 
 class TopicRepository {
   async findById(topicId: number): Promise<TopicRecord | undefined> {
@@ -9,6 +9,19 @@ class TopicRepository {
       .select()
       .from(topics)
       .where(eq(topics.topicId, topicId))
+      .limit(1);
+
+    return result[0];
+  }
+
+  async findByIdAndUserId(
+    topicId: number,
+    userId: number
+  ): Promise<TopicRecord | undefined> {
+    const result = await db
+      .select()
+      .from(topics)
+      .where(and(eq(topics.topicId, topicId), eq(topics.userId, userId)))
       .limit(1);
 
     return result[0];
@@ -40,8 +53,14 @@ class TopicRepository {
         topic: topicData.topic,
         description: topicData.description,
         status: topicData.status,
+        level: topicData.level,
       })
-      .where(eq(topics.topicId, topicData.topicId || 0))
+      .where(
+        and(
+          eq(topics.topicId, topicData.topicId || 0),
+          eq(topics.userId, topicData.userId)
+        )
+      )
       .returning();
 
     return updatedTopic[0];
