@@ -4,8 +4,10 @@ import { pgTable, serial, text, integer } from "drizzle-orm/pg-core";
 // Define table schemas
 export const topics = pgTable("topics", {
   topicId: serial("topic_id").primaryKey(),
+  userId: integer("user_id").notNull(),
   topic: text("topic").notNull(),
   description: text("description").notNull(),
+  level: integer("level").notNull().default(20),
   status: integer("status").notNull().default(1),
 });
 

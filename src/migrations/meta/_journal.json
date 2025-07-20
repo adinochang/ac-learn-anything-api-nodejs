@@ -15,6 +15,20 @@
       "when": 1752399157251,
       "tag": "0001_pale_silhouette",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1752978171510,
+      "tag": "0002_shiny_thing",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1752978866031,
+      "tag": "0003_tiresome_falcon",
+      "breakpoints": true
     }
   ]
 }

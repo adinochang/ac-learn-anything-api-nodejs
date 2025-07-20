@@ -1,0 +1,1 @@
+ALTER TABLE "topics" ADD COLUMN "level" integer DEFAULT 20 NOT NULL;
