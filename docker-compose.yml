@@ -1,10 +1,12 @@
 services:
   api:
     build:
-      context: .
+      context: ./docker
       dockerfile: Dockerfile
 
     container_name: nodejs_learn_anything  
+
+    working_dir: /app
     
     ports:
       - "${PORT}:${PORT}"
@@ -12,11 +14,10 @@ services:
     # Mount your local source code into the container.
     volumes:
       - .:/app
-      # Create an anonymous volume for node_modules inside the container.
-      # This prevents your host's node_modules (which might be for a different OS/architecture)
-      # from overwriting the container's node_modules, ensuring consistency.
-      - /app/node_modules
     
+    # First time node_modules folder init
+    entrypoint: ["/bin/sh", "./docker/docker-entrypoint.sh"]
+
     # Override the default command for development.
     command: npm run dev
     

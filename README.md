@@ -55,9 +55,12 @@ Additional pre-requisites without docker:
 
 3. Installing and Running the Application **with Docker**
 
-    Start the docker container:
+    Build and start the docker container:
 
-    ```docker compose up```
+    ```bash
+    docker compose build
+    docker compose up
+    ```
 
 4. Installing and Running the Application **without Docker**
 
@@ -120,8 +123,9 @@ src/
 .env                   # Environment variables
 package.json           # Project dependencies and scripts
 tsconfig.json          # TypeScript configuration
-Dockerfile             # Defines the API docker image
 docker-compose.yml     # Defines the Docker application  
+docker/
+Dockerfile             # Defines the API docker image
 ```
 
 
